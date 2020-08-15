@@ -32,6 +32,9 @@ func GetAllMahasiswa(ctx echo.Context) error {
 	response.Status = 1
 	response.Message = "Success"
 	response.Data = arrMhs
+
+	// reset kembali splice
+	arrMhs = arrMhs[:0]
 	return ctx.JSON(http.StatusOK, response)
 }
 
