@@ -5,6 +5,7 @@ import (
 	"college-with-ui/backend/models"
 	"github.com/labstack/echo"
 	"log"
+	"net/http"
 )
 
 var mhs models.Mahasiswa
@@ -31,5 +32,16 @@ func GetAllMahasiswa(ctx echo.Context) error {
 	response.Status = 1
 	response.Message = "Success"
 	response.Data = arrMhs
-	return nil
+	return ctx.JSON(http.StatusOK, response)
+}
+
+func AddMahasiswa(ctx echo.Context) {
+	db := database.Connect()
+	defer db.Close()
+
+	//err := r.ParseMultipartForm(4096)
+	//if err != nil {
+	//	panic(err)
+	//}
+
 }
