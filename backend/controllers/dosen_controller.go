@@ -10,8 +10,8 @@ import (
 	"github.com/labstack/echo"
 )
 
-var dsn models.Dosen
-var arrDsn models.DsnArray
+var dos models.Dosen
+var arrDosen models.DsnArray
 var res models.ResponseDosen
 
 func GetAllDosen(ctx echo.Context) error {
@@ -24,19 +24,19 @@ func GetAllDosen(ctx echo.Context) error {
 	}
 
 	for rows.Next() {
-		if err := rows.Scan(&dsn.Nama, &dsn.NIK); err != nil {
+		if err := rows.Scan(&dos.Nama, &dos.NIK); err != nil {
 			log.Fatal(err.Error())
 		} else {
-			arrDsn = append(arrDsn, dsn)
+			arrDosen = append(arrDosen, dos)
 		}
 	}
 
 	res.Status = 1
 	res.Message = "Success"
-	res.Data = arrDsn
+	res.Data = arrDosen
 
 	// reset kembali splice
-	arrDsn = arrDsn[:0]
+	arrDosen = arrDosen[:0]
 	return ctx.JSON(http.StatusOK, res)
 }
 
@@ -44,7 +44,7 @@ func AddDosen(ctx echo.Context) error {
 	db := database.Connect()
 	defer db.Close()
 
-	if err := ctx.Bind(dsn); err != nil {
+	if err := ctx.Bind(dos); err != nil {
 		return err
 	}
 
@@ -55,7 +55,7 @@ func AddDosen(ctx echo.Context) error {
 	}
 
 	defer stmt.Close()
-	result, err2 := stmt.Exec(dsn.Nama, dsn.NIK)
+	result, err2 := stmt.Exec(dos.Nama, dos.NIK)
 
 	// keluar apabila ada error
 	if err2 != nil {
