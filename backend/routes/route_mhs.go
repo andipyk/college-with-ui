@@ -8,5 +8,5 @@ import (
 
 func MahasiswaRoute(group *echo.Group) {
 	group.GET("", controllers.GetAllMahasiswa)
-	group.POST("/addmhs", controllers.AddMahasiswa)
+	group.POST("", controllers.CreateMahasiswa)
 }

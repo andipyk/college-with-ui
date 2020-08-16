@@ -3,18 +3,18 @@ package controllers
 import (
 	"college-with-ui/backend/database"
 	"college-with-ui/backend/models"
-	"fmt"
 	"log"
 	"net/http"
 
 	"github.com/labstack/echo"
 )
 
-var mhs models.Mahasiswa
-var arrMhs []models.Mahasiswa
 var response models.ResponseMahasiswa
 
 func GetAllMahasiswa(ctx echo.Context) error {
+	var arrMhs []models.Mahasiswa
+	var mhs models.Mahasiswa
+
 	db := database.Connect()
 	defer db.Close()
 
@@ -40,30 +40,34 @@ func GetAllMahasiswa(ctx echo.Context) error {
 	return ctx.JSON(http.StatusOK, response)
 }
 
-func AddMahasiswa(ctx echo.Context) error {
+func CreateMahasiswa(ctx echo.Context) error {
+	var arrMhs []models.Mahasiswa
+
 	db := database.Connect()
 	defer db.Close()
+
+	mhs := &models.Mahasiswa{}
 
 	if err := ctx.Bind(mhs); err != nil {
 		return err
 	}
 
-	// query, err := db.Exec("INSERT INTO mahasiswa VALUES (?,?)")
-	// query.Exec("nama, nim")
-	query := "INSERT INTO mahasiswa(nama, nim) VALUES (?,?)"
-	stmt, err := db.Prepare(query)
+	_, err := db.Exec("INSERT INTO mahasiswa (nama, nim) values (?,?)",
+		mhs.Nama,
+		mhs.Nim,
+	)
+
 	if err != nil {
-		fmt.Print(err.Error())
+		log.Fatal(err.Error())
 	}
 
-	defer stmt.Close()
-	result, err2 := stmt.Exec(mhs.Nama, mhs.Nim)
+	arrMhs = append(arrMhs, models.Mahasiswa{Nim: mhs.Nim, Nama: mhs.Nama})
 
-	// keluar apabila ada error
-	if err2 != nil {
-		panic(err2)
-	}
-	fmt.Println(result.LastInsertId())
+	response.Status = 1
+	response.Message = "Success Add"
+	response.Data = arrMhs
 
-	return ctx.JSON(http.StatusCreated, mhs)
+	log.Print("Insert data to database")
+
+	return ctx.JSON(http.StatusCreated, response)
 }

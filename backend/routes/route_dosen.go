@@ -8,6 +8,6 @@ import (
 
 func DosenRoute(group *echo.Group) {
 	group.GET("", controllers.GetAllDosen)
-	group.POST("/adddsn", controllers.AddMahasiswa)
+	//group.POST("/adddsn", controllers.AddMahasiswa) add dosen
 	group.POST("/newdatanilai", controllers.InputNilaiMhs)
 }
