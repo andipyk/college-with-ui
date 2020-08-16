@@ -1,8 +1,9 @@
 package routes
 
 import (
-	"github.com/labstack/echo"
 	"net/http"
+
+	"github.com/labstack/echo"
 )
 
 // return func dari Routes (Echo)
@@ -13,6 +14,7 @@ func Index() *echo.Echo {
 	})
 
 	MahasiswaRoute(e.Group("/mahasiswa"))
+	DosenRoute(e.Group("/dosen"))
 
 	return e
 }

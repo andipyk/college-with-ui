@@ -3,9 +3,11 @@ package controllers
 import (
 	"college-with-ui/backend/database"
 	"college-with-ui/backend/models"
-	"github.com/labstack/echo"
+	"fmt"
 	"log"
 	"net/http"
+
+	"github.com/labstack/echo"
 )
 
 var mhs models.Mahasiswa
@@ -38,13 +40,30 @@ func GetAllMahasiswa(ctx echo.Context) error {
 	return ctx.JSON(http.StatusOK, response)
 }
 
-func AddMahasiswa(ctx echo.Context) {
+func AddMahasiswa(ctx echo.Context) error {
 	db := database.Connect()
 	defer db.Close()
 
-	//err := r.ParseMultipartForm(4096)
-	//if err != nil {
-	//	panic(err)
-	//}
+	if err := ctx.Bind(mhs); err != nil {
+		return err
+	}
 
+	// query, err := db.Exec("INSERT INTO mahasiswa VALUES (?,?)")
+	// query.Exec("nama, nim")
+	query := "INSERT INTO mahasiswa(nama, nim) VALUES (?,?)"
+	stmt, err := db.Prepare(query)
+	if err != nil {
+		fmt.Print(err.Error())
+	}
+
+	defer stmt.Close()
+	result, err2 := stmt.Exec(mhs.Nama, mhs.Nim)
+
+	// keluar apabila ada error
+	if err2 != nil {
+		panic(err2)
+	}
+	fmt.Println(result.LastInsertId())
+
+	return ctx.JSON(http.StatusCreated, mhs)
 }

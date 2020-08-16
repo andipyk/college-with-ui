@@ -6,8 +6,8 @@ type (
 		NIM        string  `json:"nim"`
 		NIK        string  `json:"nik"`
 		Kode       string  `json:"kode"`
-		Absen      int     `json:"absen"`
-		Nilai      float32 `json:"nilai"`
-		TotalNilai float32 `json:"total_nilai"`
+		Absen      int64   `json:"absen"`
+		Nilai      float64 `json:"nilai"`
+		TotalNilai float64 `json:"total_nilai"`
 	}
 )
