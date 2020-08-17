@@ -11,35 +11,43 @@ import (
 )
 
 func InputNilaiMhs(ctx echo.Context) error {
+	var arrReport models.ReportArray
 	db := database.Connect()
 	defer db.Close()
 
-	nilai := &models.Nilai{}
-
-	if err := ctx.Bind(nilai); err != nil {
+	// bind nilai dari client
+	var nilai models.Nilai
+	if err := ctx.Bind(&nilai); err != nil {
 		return err
 	}
 
 	//hitung total nilai dan masukkan ke struct DB
-	total := totalNilai(nilai)
+	total := totalNilai(&nilai)
 	nilai.TotalNilai = total
 
-	query := "INSERT INTO nilai(nim_mhs, nik_dosen, kode_mk, absen, nilai, total_nilai) VALUES(?,?,?,?,?,?)"
+	// input ke db
+	query := "INSERT INTO nilai(nim_mhs, nama_mhs, nik_dosen, kode_mk, nama_mk, absen, nilai, total_nilai) VALUES(?,?,?,?,?,?,?,?)"
 	stmt, err := db.Prepare(query)
-
 	if err != nil {
 		fmt.Print(err.Error())
 	}
 	defer stmt.Close()
-	result, err2 := stmt.Exec(nilai.NIM, nilai.NIKDosen, nilai.KodeMK, nilai.Absen, nilai.Nilai, total)
 
-	// Exit if we get an error
+	result, err2 := stmt.Exec(nilai.NIM, nilai.NamaMhs, nilai.NIKDosen, nilai.KodeMK, nilai.NamaMK, nilai.Absen, nilai.Nilai, total)
+	// keluar apabila ada error
 	if err2 != nil {
 		panic(err2)
 	}
 	log.Println(result.LastInsertId())
 
-	return ctx.JSON(http.StatusCreated, nilai)
+	// untuk memberi respon ke client
+	arrReport = append(arrReport, nilai)
+
+	resRep.Status = 1
+	resRep.Message = "Success Add Kelas"
+	resRep.Data = arrReport
+
+	return ctx.JSON(http.StatusCreated, resRep)
 }
 
 func totalNilai(nilai *models.Nilai) float64 {
