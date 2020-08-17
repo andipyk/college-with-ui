@@ -12,5 +12,5 @@ type (
 		Data    []Dosen `json:"data"`
 	}
 
-	DsnArray []Dosen
+	DosArray []Dosen
 )

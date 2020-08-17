@@ -7,7 +7,6 @@ import (
 )
 
 func DosenRoute(group *echo.Group) {
-	group.GET("", controllers.GetAllDosen)
-	//group.POST("/adddsn", controllers.AddMahasiswa) add dosen
-	group.POST("/newdatanilai", controllers.InputNilaiMhs)
+	group.GET("/listkelas/:kode", controllers.GetAllKelasByMK) // cek kelas by kode mk
+	group.POST("/newdatanilai", controllers.InputNilaiMhs)     // tamnbah nilai
 }
