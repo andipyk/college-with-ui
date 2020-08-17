@@ -52,7 +52,7 @@ func AddDosen(ctx echo.Context) error {
 	}
 
 	// buat query untuk DB
-	query := "INSERT INTO dosen(nama, nik) VALUES (?,?)"
+	query := "INSERT INTO dosen(nama, nik, password) VALUES (?,?,?)"
 	stmt, err := db.Prepare(query)
 	if err != nil {
 		fmt.Print(err.Error())
@@ -60,7 +60,7 @@ func AddDosen(ctx echo.Context) error {
 	defer stmt.Close()
 
 	// untuk print di midware
-	result, err2 := stmt.Exec(dos.Nama, dos.NIK)
+	result, err2 := stmt.Exec(dos.Nama, dos.NIK, dos.Password)
 	// keluar apabila ada error
 	if err2 != nil {
 		panic(err2)

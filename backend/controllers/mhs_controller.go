@@ -53,9 +53,10 @@ func CreateMahasiswa(ctx echo.Context) error {
 		return err
 	}
 
-	_, err := db.Exec("INSERT INTO mahasiswa (nama, nim) values (?,?)",
+	_, err := db.Exec("INSERT INTO mahasiswa (nama, nim, password) values (?,?,?)",
 		mhs.Nama,
 		mhs.Nim,
+		mhs.Password,
 	)
 
 	if err != nil {

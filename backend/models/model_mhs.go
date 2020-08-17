@@ -2,8 +2,9 @@ package models
 
 type (
 	Mahasiswa struct {
-		Nama string `json:"nama"`
-		Nim  string `json:"nim"`
+		Nama     string `json:"nama"`
+		Nim      string `json:"nim"`
+		Password string `json:"pass"`
 	}
 
 	ResponseMahasiswa struct {

@@ -2,8 +2,9 @@ package models
 
 type (
 	Dosen struct {
-		Nama string `json:"nama"`
-		NIK  string `json:"nik"`
+		Nama     string `json:"nama"`
+		NIK      string `json:"nik"`
+		Password string `json:"pass"`
 	}
 
 	ResponseDosen struct {
