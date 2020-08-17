@@ -13,6 +13,7 @@ func Index() *echo.Echo {
 		return context.String(http.StatusOK, "Halaman ini index")
 	})
 
+	AdminRoute(e.Group("/admin"))
 	MahasiswaRoute(e.Group("/mahasiswa"))
 	DosenRoute(e.Group("/dosen"))
 

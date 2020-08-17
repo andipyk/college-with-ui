@@ -3,6 +3,7 @@ package controllers
 import (
 	"college-with-ui/backend/database"
 	"college-with-ui/backend/models"
+	"fmt"
 	"log"
 	"net/http"
 
@@ -10,6 +11,7 @@ import (
 )
 
 var response models.ResponseMahasiswa
+var resRep models.ResponseReport
 
 func GetAllMahasiswa(ctx echo.Context) error {
 	var arrMhs []models.Mahasiswa
@@ -70,4 +72,24 @@ func CreateMahasiswa(ctx echo.Context) error {
 	log.Print("Insert data to database")
 
 	return ctx.JSON(http.StatusCreated, response)
+}
+
+func GetMahasiswa(ctx echo.Context) error {
+	// var nilaiArr []models.Nilai
+	var nilai models.Nilai
+
+	db := database.Connect()
+	defer db.Close()
+
+	requestedNim := ctx.Param("nim_mhs")
+	err := db.QueryRow("SELECT nim_mhs, nik_dosen, kode_mk, absen, nilai, total_nilai FROM nilai WHERE nim_mhs = ?", requestedNim).Scan(&nilai.NIM, &nilai.NIKDosen, &nilai.KodeMK, &nilai.Absen, &nilai.Nilai, &nilai.TotalNilai)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	resRep.Status = 1
+	resRep.Message = "Success Fetch Data"
+	resRep.Data = nilai
+
+	return ctx.JSON(http.StatusOK, resRep)
 }

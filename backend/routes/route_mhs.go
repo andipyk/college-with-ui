@@ -7,6 +7,5 @@ import (
 )
 
 func MahasiswaRoute(group *echo.Group) {
-	group.GET("", controllers.GetAllMahasiswa)
-	group.POST("", controllers.CreateMahasiswa)
+	group.GET("/mhs/:nim_mhs", controllers.GetMahasiswa) // ambil data mahasiswa by name di tabel nilai
 }

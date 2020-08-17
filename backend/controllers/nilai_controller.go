@@ -28,7 +28,7 @@ func InputNilaiMhs(ctx echo.Context) error {
 		fmt.Print(err.Error())
 	}
 	defer stmt.Close()
-	result, err2 := stmt.Exec(nilai.NIM, nilai.NIK, nilai.Kode, nilai.Absen, nilai.Nilai, total)
+	result, err2 := stmt.Exec(nilai.NIM, nilai.NIKDosen, nilai.KodeMK, nilai.Absen, nilai.Nilai, total)
 
 	// Exit if we get an error
 	if err2 != nil {
