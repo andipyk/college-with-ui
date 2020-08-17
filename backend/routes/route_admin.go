@@ -7,6 +7,8 @@ import (
 )
 
 func AdminRoute(group *echo.Group) {
+	group.POST("/login", controllers.AdminLogin)
+
 	group.GET("/list_dosen", controllers.GetAllDosen)      // ambil data Dosen
 	group.POST("/input/dosen", controllers.AddDosen)       // tambah dosen
 	group.PUT("/update/dosen", controllers.EditDosen)      // edit data dosen
