@@ -76,3 +76,77 @@ func AddDosen(ctx echo.Context) error {
 
 	return ctx.JSON(http.StatusCreated, resDos)
 }
+
+func EditDosen(ctx echo.Context) error {
+	db := database.Connect()
+	defer db.Close()
+
+	dos := &models.Dosen{}
+
+	if err := ctx.Bind(dos); err != nil {
+		return err
+	}
+	log.Print(dos)
+
+	result, err := db.Exec("UPDATE dosen SET nama=? WHERE nik = ?",
+		dos.Nama,
+		dos.NIK,
+	)
+
+	if err != nil {
+		log.Print(err)
+	} else {
+		log.Print(result.RowsAffected())
+		arrDosen = append(arrDosen, models.Dosen{
+			Nama: dos.Nama,
+			NIK:  dos.NIK,
+		})
+
+	}
+
+	if affected, _ := result.RowsAffected(); affected != 0 {
+		resDos.Status = 1
+		resDos.Message = "Success Delete Data"
+	} else {
+		resDos.Status = 2
+		resDos.Message = "Data Empty"
+	}
+	resDos.Data = arrDosen
+
+	return ctx.JSON(http.StatusOK, resDos)
+}
+
+func DeleteDosen(ctx echo.Context) error {
+	db := database.Connect()
+	defer db.Close()
+
+	dos := &models.Dosen{}
+
+	if err := ctx.Bind(dos); err != nil {
+		return err
+	}
+	log.Print(dos.NIK)
+
+	result, err := db.Exec("DELETE FROM dosen where nik = ?",
+		dos.Nama,
+	)
+
+	if err != nil {
+		log.Print(err)
+	} else {
+		log.Print(result.RowsAffected())
+		arrDosen = append(arrDosen, models.Dosen{NIK: dos.NIK})
+
+	}
+
+	if affected, _ := result.RowsAffected(); affected != 0 {
+		resDos.Status = 1
+		resDos.Message = "Success Delete Data"
+	} else {
+		resDos.Status = 2
+		resDos.Message = "Data Empty"
+	}
+	resDos.Data = arrDosen
+
+	return ctx.JSON(http.StatusOK, resDos)
+}
