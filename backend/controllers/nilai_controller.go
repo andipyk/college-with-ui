@@ -4,6 +4,7 @@ import (
 	"college-with-ui/backend/database"
 	"college-with-ui/backend/models"
 	"fmt"
+	"log"
 	"net/http"
 
 	"github.com/labstack/echo"
@@ -19,7 +20,9 @@ func InputNilaiMhs(ctx echo.Context) error {
 		return err
 	}
 
+	//hitung total nilai dan masukkan ke struct DB
 	total := totalNilai(nilai)
+	nilai.TotalNilai = total
 
 	query := "INSERT INTO nilai(nim_mhs, nik_dosen, kode_mk, absen, nilai, total_nilai) VALUES(?,?,?,?,?,?)"
 	stmt, err := db.Prepare(query)
@@ -34,7 +37,7 @@ func InputNilaiMhs(ctx echo.Context) error {
 	if err2 != nil {
 		panic(err2)
 	}
-	fmt.Println(result.LastInsertId())
+	log.Println(result.LastInsertId())
 
 	return ctx.JSON(http.StatusCreated, nilai)
 }

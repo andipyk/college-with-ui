@@ -37,7 +37,7 @@ func AddKelas(ctx echo.Context) error {
 	if err2 != nil {
 		panic(err2)
 	}
-	fmt.Println(result.LastInsertId())
+	log.Println(result.LastInsertId())
 
 	// untuk memberi respon ke client
 	arrKelas = append(arrKelas, models.Kelas{Nama: kls.Nama, KodeMK: kls.KodeMK, NIKDosen: kls.NIKDosen})

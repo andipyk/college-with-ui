@@ -65,7 +65,7 @@ func AddDosen(ctx echo.Context) error {
 	if err2 != nil {
 		panic(err2)
 	}
-	fmt.Println(result.LastInsertId())
+	log.Println(result.LastInsertId())
 
 	// untuk memberi respon ke client
 	arrDosen = append(arrDosen, models.Dosen{Nama: dos.Nama, NIK: dos.NIK})
