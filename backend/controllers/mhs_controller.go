@@ -3,6 +3,7 @@ package controllers
 import (
 	"college-with-ui/backend/database"
 	"college-with-ui/backend/models"
+	"fmt"
 	"log"
 	"net/http"
 
@@ -146,4 +147,37 @@ func DeleteMahasiswa(ctx echo.Context) error {
 	response.Data = arrMhs
 
 	return ctx.JSON(http.StatusOK, response)
+}
+
+func GetMahasiswa(ctx echo.Context) error {
+	var arrReport models.ReportArray
+	var nilai models.Nilai
+	var resRep models.ResponseReport
+
+	db := database.Connect()
+	defer db.Close()
+
+	requestedNim := ctx.Param("nim_mhs")
+	err := db.QueryRow("SELECT nim_mhs, nama_mhs, nik_dosen, kode_mk, nama_mk, absen, nilai, total_nilai FROM nilai WHERE nim_mhs = ?", requestedNim).Scan(&nilai.NIM, &nilai.NamaMhs, &nilai.NIKDosen, &nilai.KodeMK, &nilai.NamaMK, &nilai.Absen, &nilai.Nilai, &nilai.TotalNilai)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	// untuk memberi respon ke client
+	arrReport = append(arrReport, models.Nilai{
+		NIM:        nilai.NIM,
+		NamaMhs:    nilai.NamaMhs,
+		NIKDosen:   nilai.NIKDosen,
+		KodeMK:     nilai.KodeMK,
+		NamaMK:     nilai.NamaMK,
+		Absen:      nilai.Absen,
+		Nilai:      nilai.Nilai,
+		TotalNilai: nilai.TotalNilai,
+	})
+
+	resRep.Status = 1
+	resRep.Message = "Success Fetch Data"
+	resRep.Data = arrReport
+
+	return ctx.JSON(http.StatusOK, resRep)
 }

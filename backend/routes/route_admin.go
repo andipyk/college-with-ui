@@ -7,10 +7,13 @@ import (
 )
 
 func AdminRoute(group *echo.Group) {
-	group.GET("/listdos", controllers.GetAllDosen)     // ambil data Dosen
-	group.GET("/listmhs", controllers.GetAllMahasiswa) // ambil data mahasiswa
+	group.GET("/list", controllers.GetAllDosen) // ambil data Dosen
+	group.POST("/input", controllers.AddDosen)  // tambah dosen
 
-	group.POST("/inputmhs", controllers.CreateMahasiswa) // tambah mahasiswa
-	group.POST("/inputdos", controllers.AddDosen)        // tambah dosen
-	group.POST("/inputkls", controllers.AddKelas)        // tambah kelas
+	group.GET("/list", controllers.GetAllMahasiswa)      // ambil data mahasiswa
+	group.POST("/input", controllers.CreateMahasiswa)    // tambah data mahasiswa
+	group.PUT("/update", controllers.EditMahasiswa)      // edit data mahasiswa
+	group.DELETE("/delete", controllers.DeleteMahasiswa) // delete data mahasiswa
+
+	group.POST("/inputkls", controllers.AddKelas) // tambah kelas
 }
