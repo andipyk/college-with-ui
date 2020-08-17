@@ -9,11 +9,11 @@ import (
 	"github.com/labstack/echo"
 )
 
-var nilai models.Nilai
-
 func InputNilaiMhs(ctx echo.Context) error {
 	db := database.Connect()
 	defer db.Close()
+
+	nilai := &models.Nilai{}
 
 	if err := ctx.Bind(nilai); err != nil {
 		return err
@@ -39,7 +39,7 @@ func InputNilaiMhs(ctx echo.Context) error {
 	return ctx.JSON(http.StatusCreated, nilai)
 }
 
-func totalNilai(nilai models.Nilai) float64 {
+func totalNilai(nilai *models.Nilai) float64 {
 
 	bobotAbsen := (float64(nilai.Absen) / 14) * 30
 	bobotNilai := nilai.Nilai * 70 / 100
