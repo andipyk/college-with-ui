@@ -71,3 +71,39 @@ func CreateMahasiswa(ctx echo.Context) error {
 
 	return ctx.JSON(http.StatusCreated, response)
 }
+
+func DeleteMahasiswa(ctx echo.Context) error {
+	db := database.Connect()
+	defer db.Close()
+
+	var arrMhs []models.Mahasiswa
+	mhs := &models.Mahasiswa{}
+
+	if err := ctx.Bind(mhs); err != nil {
+		return err
+	}
+	log.Print(mhs.Nim)
+
+	result, err := db.Exec("DELETE FROM mahasiswa where nim = ?",
+		mhs.Nim,
+	)
+
+	if err != nil {
+		log.Print(err)
+	} else {
+		log.Print(result.RowsAffected())
+		arrMhs = append(arrMhs, models.Mahasiswa{Nim: mhs.Nim})
+
+	}
+
+	if affected, _ := result.RowsAffected(); affected != 0 {
+		response.Status = 1
+		response.Message = "Success Delete Data"
+	} else {
+		response.Status = 2
+		response.Message = "Data Empty"
+	}
+	response.Data = arrMhs
+
+	return ctx.JSON(http.StatusOK, response)
+}
