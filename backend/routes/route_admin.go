@@ -17,5 +17,7 @@ func AdminRoute(group *echo.Group) {
 	group.PUT("/update/mahasiswa", controllers.EditMahasiswa)      // edit data mahasiswa
 	group.DELETE("/delete/mahasiswa", controllers.DeleteMahasiswa) // delete data mahasiswa
 
-	group.POST("/input/kelas", controllers.AddKelas) // tambah kelas
+	group.GET("/list_kelas", controllers.GetAllKelas)      // ambil data kelas
+	group.POST("/input/kelas", controllers.AddKelas)       // tambah kelas
+	group.DELETE("/delete/kelas", controllers.DeleteKelas) // delete kelas by kode
 }

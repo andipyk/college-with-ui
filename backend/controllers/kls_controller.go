@@ -13,6 +13,34 @@ import (
 var arrKelas models.KlsArray
 var resKls models.ResponseKelas
 
+func GetAllKelas(ctx echo.Context) error {
+	db := database.Connect()
+	defer db.Close()
+
+	var kls models.Kelas
+
+	rows, err := db.Query("SELECT nama, kode, nik_dosen FROM kelas")
+	if err != nil {
+		log.Print(err)
+	}
+
+	for rows.Next() {
+		if err := rows.Scan(&kls.Nama, &kls.KodeMK, &kls.NIKDosen); err != nil {
+			log.Fatal(err.Error())
+		} else {
+			arrKelas = append(arrKelas, kls)
+		}
+	}
+
+	resKls.Status = 1
+	resKls.Message = "Success"
+	resKls.Data = arrKelas
+
+	// reset kembali splice
+	arrKelas = arrKelas[:0]
+	return ctx.JSON(http.StatusOK, resKls)
+}
+
 func AddKelas(ctx echo.Context) error {
 	db := database.Connect()
 	defer db.Close()
@@ -74,6 +102,41 @@ func GetAllKelasByMK(ctx echo.Context) error {
 	resKls.Data = arrKelas
 
 	// reset kembali splice
-	arrDosen = arrDosen[:0]
+	arrKelas = arrKelas[:0]
+	return ctx.JSON(http.StatusOK, resKls)
+}
+
+func DeleteKelas(ctx echo.Context) error {
+	db := database.Connect()
+	defer db.Close()
+
+	kls := &models.Kelas{}
+
+	if err := ctx.Bind(kls); err != nil {
+		return err
+	}
+	log.Print(kls.KodeMK)
+
+	result, err := db.Exec("DELETE FROM kelas where kode = ?",
+		kls.KodeMK,
+	)
+
+	if err != nil {
+		log.Print(err)
+	} else {
+		log.Print(result.RowsAffected())
+		arrKelas = append(arrKelas, models.Kelas{KodeMK: kls.KodeMK})
+
+	}
+
+	if affected, _ := result.RowsAffected(); affected != 0 {
+		resKls.Status = 1
+		resKls.Message = "Success Delete Data"
+	} else {
+		resKls.Status = 2
+		resKls.Message = "Data Empty"
+	}
+	resKls.Data = arrKelas
+
 	return ctx.JSON(http.StatusOK, resKls)
 }
