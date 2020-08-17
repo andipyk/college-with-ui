@@ -3,8 +3,8 @@
 
   import { onMount } from "svelte";
   import MhsGet from "./MhsGet.svelte";
-import MhsCreate from "./MhsCreate.svelte";
-import MhsEdit from "./MhsEdit.svelte";
+  import MhsCreate from "./MhsCreate.svelte";
+  import MhsEdit from ".//MhsEdit.svelte";
 
   onMount(async () => {
     await fetch(`http://localhost:3000/admin/list_mahasiswa`)

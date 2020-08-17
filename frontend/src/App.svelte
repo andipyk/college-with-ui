@@ -1,5 +1,5 @@
 <script>
-  import Mahasiswa from "./mahasiswa/Mahasiswa.svelte";
+  import AdminPage from "./pages/admin/AdminPage.svelte";
  
 
 </script>
@@ -8,5 +8,5 @@
 </style>
 
 <div>
-  <Mahasiswa/>
+  <AdminPage/>
 </div>

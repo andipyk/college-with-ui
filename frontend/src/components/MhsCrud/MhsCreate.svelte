@@ -1,5 +1,5 @@
 <script>
-import Button from "../components/Button.svelte";
+import Button from "../Button.svelte";
 
   let nama = "";
   let nim = "";
@@ -33,8 +33,12 @@ import Button from "../components/Button.svelte";
 <div>
   <h1>Form</h1>
   <form class="content">
+    
+    <!-- svelte-ignore a11y-label-has-associated-control -->
     <label>Nama</label>
     <input type="text" bind:value={nama} />
+    
+    <!-- svelte-ignore a11y-label-has-associated-control -->
     <label>NIM</label>
     <input type="text" bind:value={nim} />
     <Button on:click={doPost} btnText={"Tambahkan"}/>

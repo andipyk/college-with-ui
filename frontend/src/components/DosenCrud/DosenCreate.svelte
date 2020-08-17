@@ -1,19 +1,19 @@
 <script>
-  export let dataMhs;
+import Button from "../Button.svelte";
 
   let nama = "";
-  let nim = "";
+  let nik = "";
 
-  async function doUpdate() {
-    const res = await fetch("http://localhost:3000/admin/update/mahasiswa", {
-      method: "PUT",
+  async function doPost() {
+    const res = await fetch("http://localhost:3000/admin/input/dosen", {
+      method: "POST",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
         nama,
-        nim,
+        nik,
       }),
     });
 
@@ -30,21 +30,17 @@
   }
 </style>
 
-
 <div>
-  <h1>Form Edit</h1>
+  <h1>Form</h1>
   <form class="content">
+    
+    <!-- svelte-ignore a11y-label-has-associated-control -->
     <label>Nama</label>
     <input type="text" bind:value={nama} />
     
-    <label>NIM</label>
-    <select name="nim" bind:value={nim}>
-      {#if dataMhs}
-        {#each dataMhs as mhs}
-          <option value={mhs.nim}>{mhs.nim}</option>
-        {/each}
-      {:else}<option disabled>loading....</option>{/if}
-    </select>
-    <button type="button" on:click={doUpdate}>Simpan</button>
+    <!-- svelte-ignore a11y-label-has-associated-control -->
+    <label>NIK</label>
+    <input type="text" bind:value={nik} />
+    <Button on:click={doPost} btnText={"Tambahkan"}/>
   </form>
 </div>
