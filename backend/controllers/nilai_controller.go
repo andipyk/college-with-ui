@@ -12,6 +12,8 @@ import (
 
 func InputNilaiMhs(ctx echo.Context) error {
 	var arrReport models.ReportArray
+	var resRep models.ResponseReport
+
 	db := database.Connect()
 	defer db.Close()
 

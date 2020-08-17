@@ -64,7 +64,7 @@ func CreateMahasiswa(ctx echo.Context) error {
 	arrMhs = append(arrMhs, models.Mahasiswa{Nim: mhs.Nim, Nama: mhs.Nama})
 
 	response.Status = 1
-	response.Message = "Success Add"
+	response.Message = "Success Add Mahasiswa"
 	response.Data = arrMhs
 
 	log.Print("Insert data to database")
