@@ -101,3 +101,48 @@ func MahasiswaLogin(ctx echo.Context) error {
 		return ctx.JSON(http.StatusOK, resMhs)
 	}
 }
+
+func AdminLogin(ctx echo.Context) error {
+	db := database.Connect()
+	defer db.Close()
+
+	var resAdm models.ResponseAdmin
+	var arrAdm []models.Admin
+	var admLogin models.Admin
+
+	if err := ctx.Bind(&admLogin); err != nil {
+		return err
+	}
+	log.Print(admLogin.Username)
+
+	adm := &models.Admin{}
+	err := db.QueryRow("SELECT username, password FROM admin WHERE username = ?", &admLogin.Username).Scan(&adm.Username, &adm.Password)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	// untuk memberi respon ke client
+	if adm.Username == "" {
+		resAdm.Status = 0
+		resAdm.Message = "No registered admin in the system"
+
+		return ctx.JSON(http.StatusBadRequest, resAdm)
+
+	} else if admLogin.Username != adm.Username || admLogin.Password != adm.Password {
+		resAdm.Status = 0
+		resAdm.Message = "Please input correct password or you are not an admin"
+
+		return ctx.JSON(http.StatusBadRequest, resAdm)
+
+	} else {
+		arrAdm = append(arrAdm, models.Admin{
+			Username: adm.Username,
+		})
+
+		resAdm.Status = 1
+		resAdm.Message = "Success Validate Login Data"
+		resAdm.Data = arrAdm
+
+		return ctx.JSON(http.StatusOK, resAdm)
+	}
+}
