@@ -33,7 +33,7 @@
 
 <div>
   <h1>Form Edit</h1>
-  <form class="content">
+  <form class="content" on:submit={doUpdate}>
     <!-- svelte-ignore a11y-label-has-associated-control -->
     <label>Nama</label>
     <input type="text" bind:value={nama} />
@@ -47,6 +47,6 @@
         {/each}
       {:else}<option disabled>loading....</option>{/if}
     </select>
-    <button type="button" on:click={doUpdate}>Simpan</button>
+    <button type="submit" >Simpan</button>
   </form>
 </div>

@@ -10,8 +10,13 @@
   </style>
   
   <div>
-    <!-- <CrudMahasiswa/> -->
-    <!-- <CrudDosen /> -->
+    <h1>=== Mahasiswa ===</h1>
+    <CrudMahasiswa/>
+    
+    <h1>=== Dosen ===</h1>
+    <CrudDosen />
+
+    <h2>=== Kelas ===</h2>
     <CrudKelas />
   </div>
   
