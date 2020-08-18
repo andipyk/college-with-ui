@@ -21,7 +21,8 @@ func DosenLogin(ctx echo.Context) error {
 	if err := ctx.Bind(&dosLogin); err != nil {
 		return err
 	}
-	log.Print(dosLogin.NIK)
+	log.Print("NIK Dosen Login: ", dosLogin.NIK)
+	log.Print("Nama Dosen Login: ", dosLogin.Nama)
 
 	dos := &models.Dosen{}
 	err := db.QueryRow("SELECT nik, nama, password FROM dosen WHERE nik = ?", &dosLogin.NIK).Scan(&dos.NIK, &dos.Nama, &dos.Password)
@@ -113,7 +114,8 @@ func AdminLogin(ctx echo.Context) error {
 	if err := ctx.Bind(&admLogin); err != nil {
 		return err
 	}
-	log.Print(admLogin.Username)
+	log.Print("user admin : ", admLogin.Username)
+	log.Print("pass admin : ", admLogin.Password)
 
 	adm := &models.Admin{}
 	err := db.QueryRow("SELECT username, password FROM admin WHERE username = ?", &admLogin.Username).Scan(&adm.Username, &adm.Password)

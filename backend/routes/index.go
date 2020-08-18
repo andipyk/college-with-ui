@@ -19,17 +19,3 @@ func Index() *echo.Echo {
 
 	return e
 }
-
-// route dipisah admin, dosen, mahasiswa .. tapi controller sesuai dengan tabel / model
-// === router ===
-// Mahasiwa
-// CRUD Mahasiswa
-
-// Nilai
-// CRUD Nilai
-
-// Dosen
-// CRUD Dosen
-
-// Kelas
-// CRUD Kelas
