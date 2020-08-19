@@ -27,6 +27,8 @@ func InputNilaiMhs(ctx echo.Context) error {
 	total := totalNilai(&nilai)
 	nilai.TotalNilai = total
 
+	log.Println("nilai: ", nilai)
+
 	// input ke db
 	query := "INSERT INTO nilai(nim_mhs, nama_mhs, nik_dosen, kode_mk, nama_mk, absen, nilai, total_nilai) VALUES(?,?,?,?,?,?,?,?)"
 	stmt, err := db.Prepare(query)
